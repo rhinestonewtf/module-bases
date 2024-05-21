@@ -1,9 +1,14 @@
 [profile.default]
+emv_version = "paris"
 src = "src"
 out = "out"
-libs = ["node_modules", "lib"]
+script = "script"
+libs = ["node_modules"]
 fs_permissions = [{ access = "read", path = "out-optimized" }]
 allow_paths = ["*", "/"]
+
+[rpc_endpoints]
+mainnet = "${MAINNET_RPC_URL}" 
 
 [fmt]
 bracket_spacing = true
@@ -14,4 +19,3 @@ number_underscore = "thousands"
 quote_style = "double"
 tab_width = 4
 wrap_comments = true
-

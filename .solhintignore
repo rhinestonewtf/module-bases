@@ -1,6 +1,3 @@
 node_modules/
 test/
-src/integrations/MockRegistry.sol
-src/integrations/examples/
-src/external/examples/
 script/

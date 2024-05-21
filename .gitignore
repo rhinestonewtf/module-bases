@@ -14,4 +14,5 @@ docs/
 .env.local
 .t
 
+# Node modules
 node_modules
