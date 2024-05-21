@@ -1,6 +1,6 @@
 {
-  "name": "@rhinestone/femplate",
-  "description": "Repo Template for Rhinestone Projects",
+  "name": "@rhinestone/module-base",
+  "description": "Base Contracts for Modules built with Modulekit ",
   "license": "GPL-3.0",
   "version": "0.0.1",
   "author": {
