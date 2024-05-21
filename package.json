@@ -11,9 +11,7 @@
     "url": "todo"
   },
   "dependencies": {
-    "solady": "github:vectorized/solady"
-  },
-  "devDependencies": {
+    "solady": "github:vectorized/solady",
     "@ERC4337/account-abstraction": "github:kopy-kat/account-abstraction#develop",
     "erc7579": "github:erc7579/erc7579-implementation",
     "@changesets/cli": "^2.27.2",
@@ -41,7 +39,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "github:rhinestonewtf/femplate",
+  "repository": "github:rhinestonewtf/module-base",
   "scripts": {
     "build": "forge build",
     "build:optimized": "FOUNDRY_PROFILE=optimized forge build",

@@ -8,10 +8,6 @@ importers:
 
   .:
     dependencies:
-      solady:
-        specifier: github:vectorized/solady
-        version: https://codeload.github.com/vectorized/solady/tar.gz/5e7497c2573576157f9ca23460adbbf3081d0176
-    devDependencies:
       '@ERC4337/account-abstraction':
         specifier: github:kopy-kat/account-abstraction#develop
         version: accountabstraction@https://codeload.github.com/kopy-kat/account-abstraction/tar.gz/c5887153fbfe3ed09b2637cac39873f96d676f38(ethers@5.7.2)(hardhat@2.22.4(typescript@5.4.5))(lodash@4.17.21)(typechain@5.2.0(typescript@5.4.5))
@@ -45,6 +41,9 @@ importers:
       forge-std:
         specifier: github:foundry-rs/forge-std#v1.7.6
         version: https://codeload.github.com/foundry-rs/forge-std/tar.gz/ae570fec082bfe1c1f45b0acca4a2b4f84d345ce
+      solady:
+        specifier: github:vectorized/solady#9deb9ed36a27261a8745db5b7cd7f4cdc3b1cd4e
+        version: https://codeload.github.com/vectorized/solady/tar.gz/9deb9ed36a27261a8745db5b7cd7f4cdc3b1cd4e
       solhint:
         specifier: ^4.5.2
         version: 4.5.4(typescript@5.4.5)
@@ -2617,6 +2616,10 @@ packages:
   solady@https://codeload.github.com/vectorized/solady/tar.gz/5e7497c2573576157f9ca23460adbbf3081d0176:
     resolution: {tarball: https://codeload.github.com/vectorized/solady/tar.gz/5e7497c2573576157f9ca23460adbbf3081d0176}
     version: 0.0.201
+
+  solady@https://codeload.github.com/vectorized/solady/tar.gz/9deb9ed36a27261a8745db5b7cd7f4cdc3b1cd4e:
+    resolution: {tarball: https://codeload.github.com/vectorized/solady/tar.gz/9deb9ed36a27261a8745db5b7cd7f4cdc3b1cd4e}
+    version: 0.0.168
 
   solc-typed-ast@18.1.2:
     resolution: {integrity: sha512-57IKzvXHcyjqdjHEdX7NQuWkPALlH8V4eJ6UUehWrzgHDVzKVOCFplwgLDRnOZ8kDMO8+Ms8sQhfrivFK+v5FA==}
@@ -6318,6 +6321,8 @@ snapshots:
       yargs: 15.4.1
 
   solady@https://codeload.github.com/vectorized/solady/tar.gz/5e7497c2573576157f9ca23460adbbf3081d0176: {}
+
+  solady@https://codeload.github.com/vectorized/solady/tar.gz/9deb9ed36a27261a8745db5b7cd7f4cdc3b1cd4e: {}
 
   solc-typed-ast@18.1.2(typescript@5.4.5)(zod@3.23.8):
     dependencies:
