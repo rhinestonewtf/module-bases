@@ -38,7 +38,7 @@
   "homepage": "https://docs.rhinestone.wtf/modulekit",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rhinestonewtf/module-bases.git"
+    "url": "git+https://github.com/rhinestonewtf/module-bases.git"
   },
   "bugs": {
     "url": "https://github.com/rhinestonewtf/module-bases/issues"
