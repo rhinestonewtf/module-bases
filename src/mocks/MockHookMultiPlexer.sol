@@ -68,7 +68,10 @@ contract MockHookMultiPlexer is ERC7579HookBase {
 
     function _postCheck(address account, bytes calldata hookData) internal override {
         uint256 length = hooks[account].length;
-        bytes[] memory _hookData = abi.decode(hookData, (bytes[]));
+        bytes[] memory _hookData = new bytes[](length);
+        if (hookData.length != 0) {
+            _hookData = abi.decode(hookData, (bytes[]));
+        }
         for (uint256 i = 0; i < length; i++) {
             (bool success,) =
                 hooks[account][i].call(abi.encodeCall(ERC7579HookBase.postCheck, (_hookData[i])));
