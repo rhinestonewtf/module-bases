@@ -10,13 +10,14 @@ contract MockHookMultiPlexer is ERC7579HookBase {
     mapping(address => address[]) public hooks;
 
     function onInstall(bytes calldata data) external override {
+        if (data.length == 0) return;
         (address[] memory _hooks) = abi.decode(data, (address[]));
         for (uint256 i = 0; i < _hooks.length; i++) {
             hooks[msg.sender].push(_hooks[i]);
         }
     }
 
-    function onUninstall(bytes calldata data) external override {
+    function onUninstall(bytes calldata) external override {
         delete hooks[msg.sender];
     }
 
