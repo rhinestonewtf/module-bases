@@ -55,6 +55,8 @@ contract MockHookMultiPlexer is ERC7579HookBase {
         returns (bytes memory hookData)
     {
         uint256 length = hooks[account].length;
+        if (length == 0) return hookData;
+
         bytes[] memory _hookData = new bytes[](length);
         for (uint256 i = 0; i < length; i++) {
             (bool success, bytes memory _ret) = hooks[account][i].call(
@@ -68,6 +70,8 @@ contract MockHookMultiPlexer is ERC7579HookBase {
 
     function _postCheck(address account, bytes calldata hookData) internal override {
         uint256 length = hooks[account].length;
+        if (length == 0) return;
+
         bytes[] memory _hookData = new bytes[](length);
         if (hookData.length != 0) {
             _hookData = abi.decode(hookData, (bytes[]));
