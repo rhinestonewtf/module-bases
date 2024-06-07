@@ -60,7 +60,11 @@ contract MockHookMultiPlexer is ERC7579HookBase {
         bytes[] memory _hookData = new bytes[](length);
         for (uint256 i = 0; i < length; i++) {
             (bool success, bytes memory _ret) = hooks[account][i].call(
-                abi.encodeCall(ERC7579HookBase.preCheck, (msgSender, msgValue, msgData))
+                abi.encodePacked(
+                    abi.encodeCall(ERC7579HookBase.preCheck, (msgSender, msgValue, msgData)),
+                    address(this),
+                    msg.sender
+                )
             );
             if (!success) revert PreCheckFailed(hooks[account][i]);
             _hookData[i] = _ret;
@@ -77,8 +81,13 @@ contract MockHookMultiPlexer is ERC7579HookBase {
             _hookData = abi.decode(hookData, (bytes[]));
         }
         for (uint256 i = 0; i < length; i++) {
-            (bool success,) =
-                hooks[account][i].call(abi.encodeCall(ERC7579HookBase.postCheck, (_hookData[i])));
+            (bool success,) = hooks[account][i].call(
+                abi.encodePacked(
+                    abi.encodeCall(ERC7579HookBase.postCheck, (_hookData[i])),
+                    address(this),
+                    msg.sender
+                )
+            );
             if (!success) revert PostCheckFailed(hooks[account][i]);
         }
     }
