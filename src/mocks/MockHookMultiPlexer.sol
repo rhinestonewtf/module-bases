@@ -3,7 +3,7 @@ pragma solidity ^0.8.23;
 
 import { ERC7579HookBase } from "../ERC7579HookBase.sol";
 
-contract MockHook is ERC7579HookBase {
+contract MockHookMultiPlexer is ERC7579HookBase {
     error PreCheckFailed(address hook);
     error PostCheckFailed(address hook);
 
