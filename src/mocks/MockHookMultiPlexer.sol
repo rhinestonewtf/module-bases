@@ -36,6 +36,14 @@ contract MockHookMultiPlexer is ERC7579HookBase {
         }
     }
 
+    function isHookInstalled(address account, address hook) external view returns (bool) {
+        address[] memory _hooks = hooks[account];
+        for (uint256 i = 0; i < _hooks.length; i++) {
+            if (_hooks[i] == hook) return true;
+        }
+        return false;
+    }
+
     function _preCheck(
         address account,
         address msgSender,
