@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity ^0.8.25;
 
-import { IERC7579Account } from "./external/ERC7579.sol";
+import { IERC7579Account, IERC7579Hook } from "./external/ERC7579.sol";
 import { ExecutionLib, Execution } from "erc7579/lib/ExecutionLib.sol";
 import {
     ModeLib,
@@ -11,7 +11,7 @@ import {
     CALLTYPE_BATCH,
     CALLTYPE_DELEGATECALL
 } from "erc7579/lib/ModeLib.sol";
-import { IERC7579Hook } from "./external/ERC7579.sol";
+import { IAccountExecute } from "./external/ERC4337.sol";
 import { ERC7579ModuleBase } from "./ERC7579ModuleBase.sol";
 import { TrustedForwarder } from "./utils/TrustedForwarder.sol";
 
@@ -37,6 +37,23 @@ abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, Truste
     {
         bytes4 selector = bytes4(msgData[0:4]);
 
+        if (selector == IAccountExecute.executeUserOp.selector) {
+            // todo
+            return _decodeCallData(msgSender, msgValue, msgData);
+        } else {
+            return _decodeCallData(msgSender, msgValue, msgData);
+        }
+    }
+
+    function _decodeCallData(
+        address msgSender,
+        uint256 msgValue,
+        bytes calldata msgData
+    )
+        internal
+        returns (bytes memory hookData)
+    {
+        bytes4 selector = bytes4(msgData[0:4]);
         if (selector == IERC7579Account.execute.selector) {
             return _handle4337Executions(msgSender, msgData);
         } else if (selector == IERC7579Account.executeFromExecutor.selector) {
