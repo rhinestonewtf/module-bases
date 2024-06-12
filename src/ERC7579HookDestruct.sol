@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity ^0.8.25;
 
-import { IERC7579Account } from "./external/ERC7579.sol";
+import { IERC7579Account, IERC7579Hook } from "./external/ERC7579.sol";
 import { ExecutionLib, Execution } from "erc7579/lib/ExecutionLib.sol";
 import {
     ModeLib,
@@ -11,10 +11,11 @@ import {
     CALLTYPE_BATCH,
     CALLTYPE_DELEGATECALL
 } from "erc7579/lib/ModeLib.sol";
-import { IERC7579Hook } from "./external/ERC7579.sol";
+import { IAccountExecute } from "./external/ERC4337.sol";
 import { ERC7579ModuleBase } from "./ERC7579ModuleBase.sol";
 import { TrustedForwarder } from "./utils/TrustedForwarder.sol";
 
+uint256 constant EXECUSEROP_OFFSET = 164;
 uint256 constant EXEC_OFFSET = 100;
 uint256 constant INSTALL_OFFSET = 132;
 
@@ -37,6 +38,27 @@ abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, Truste
     {
         bytes4 selector = bytes4(msgData[0:4]);
 
+        if (selector == IAccountExecute.executeUserOp.selector) {
+            uint256 offset =
+                uint256(bytes32(msgData[EXECUSEROP_OFFSET:EXECUSEROP_OFFSET + 32])) + 68;
+            uint256 paramLen = uint256(bytes32(msgData[offset:offset + 32]));
+            offset += 32;
+            bytes calldata _msgData = msgData[offset:offset + paramLen];
+            return _decodeCallData(msgSender, msgValue, _msgData);
+        } else {
+            return _decodeCallData(msgSender, msgValue, msgData);
+        }
+    }
+
+    function _decodeCallData(
+        address msgSender,
+        uint256 msgValue,
+        bytes calldata msgData
+    )
+        internal
+        returns (bytes memory hookData)
+    {
+        bytes4 selector = bytes4(msgData[0:4]);
         if (selector == IERC7579Account.execute.selector) {
             return _handle4337Executions(msgSender, msgData);
         } else if (selector == IERC7579Account.executeFromExecutor.selector) {
