@@ -13,6 +13,7 @@ import {
 } from "erc7579/lib/ModeLib.sol";
 import "forge-std/Test.sol";
 import { ExecutionLib, Execution } from "erc7579/lib/ExecutionLib.sol";
+import { IAccountExecute, PackedUserOperation } from "src/external/ERC4337.sol";
 
 contract HookDestructTest is Test, ERC7579HookDestruct {
     struct Log {
@@ -115,6 +116,46 @@ contract HookDestructTest is Test, ERC7579HookDestruct {
         bytes memory hookData =
             ERC7579HookDestruct(address(this)).preCheck(msgSender, msgValue, callData);
         assertEq(hookData, "onInstall", "return value wrong");
+    }
+
+    function test_executeUserOp(
+        address msgSender,
+        uint256 msgValue,
+        address target,
+        uint256 value,
+        bytes memory data
+    )
+        public
+    {
+        vm.assume(data.length > 0);
+        ModeCode mode = ModeLib.encodeSimpleSingle();
+        bytes memory execution = ExecutionLib.encodeSingle(target, value, data);
+        bytes memory callData = abi.encodeCall(IERC7579Account.execute, (mode, execution));
+        PackedUserOperation memory userOp = PackedUserOperation({
+            sender: makeAddr("account"),
+            nonce: 0,
+            initCode: abi.encodePacked(makeAddr("factory"), bytes("initCode")),
+            callData: abi.encodeCall(IERC7579Account.execute, (mode, execution)),
+            accountGasLimits: bytes32(abi.encodePacked(uint128(2e6), uint128(2e6))),
+            preVerificationGas: 2e6,
+            gasFees: bytes32(abi.encodePacked(uint128(2e6), uint128(2e6))),
+            paymasterAndData: bytes(""),
+            signature: abi.encodePacked(hex"41414141")
+        });
+        bytes memory userOpCallData =
+            abi.encodeCall(IAccountExecute.executeUserOp, (userOp, keccak256(abi.encode(userOp))));
+        _log.msgData = callData;
+        _log.msgValue = msgValue;
+        _log.msgSender = msgSender;
+
+        _log.executionsLength = 1;
+        _log.executions[0].target = target;
+        _log.executions[0].value = value;
+        _log.executions[0].callData = data;
+
+        bytes memory hookData =
+            ERC7579HookDestruct(address(this)).preCheck(msgSender, msgValue, userOpCallData);
+        assertEq(hookData, "onExecute");
     }
 
     function onExecute(

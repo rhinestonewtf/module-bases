@@ -15,6 +15,7 @@ import { IAccountExecute } from "./external/ERC4337.sol";
 import { ERC7579ModuleBase } from "./ERC7579ModuleBase.sol";
 import { TrustedForwarder } from "./utils/TrustedForwarder.sol";
 
+uint256 constant EXECUSEROP_OFFSET = 164;
 uint256 constant EXEC_OFFSET = 100;
 uint256 constant INSTALL_OFFSET = 132;
 
@@ -38,8 +39,12 @@ abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, Truste
         bytes4 selector = bytes4(msgData[0:4]);
 
         if (selector == IAccountExecute.executeUserOp.selector) {
-            // todo
-            return _decodeCallData(msgSender, msgValue, msgData);
+            uint256 offset =
+                uint256(bytes32(msgData[EXECUSEROP_OFFSET:EXECUSEROP_OFFSET + 32])) + 68;
+            uint256 paramLen = uint256(bytes32(msgData[offset:offset + 32]));
+            offset += 32;
+            bytes calldata _msgData = msgData[offset:offset + paramLen];
+            return _decodeCallData(msgSender, msgValue, _msgData);
         } else {
             return _decodeCallData(msgSender, msgValue, msgData);
         }
