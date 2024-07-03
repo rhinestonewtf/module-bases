@@ -7,13 +7,19 @@ contract MockHookMultiPlexer is ERC7579HookBase {
     error PreCheckFailed(address hook);
     error PostCheckFailed(address hook);
 
-    mapping(address => address[]) public hooks;
+    struct Hook {
+        address hook;
+        bool isInitialized;
+    }
+
+    mapping(address => Hook[]) public hooks;
 
     function onInstall(bytes calldata data) external override {
         if (data.length == 0) return;
         (address[] memory _hooks) = abi.decode(data, (address[]));
         for (uint256 i = 0; i < _hooks.length; i++) {
-            hooks[msg.sender].push(_hooks[i]);
+            Hook memory _hook = Hook(_hooks[i], true);
+            hooks[msg.sender].push(_hook);
         }
     }
 
@@ -22,13 +28,14 @@ contract MockHookMultiPlexer is ERC7579HookBase {
     }
 
     function addHook(address hook) external {
-        hooks[msg.sender].push(hook);
+        Hook memory _hook = Hook(hook, false);
+        hooks[msg.sender].push(_hook);
     }
 
     function removeHook(address hook) external {
-        address[] storage _hooks = hooks[msg.sender];
+        Hook[] storage _hooks = hooks[msg.sender];
         for (uint256 i = 0; i < _hooks.length; i++) {
-            if (_hooks[i] == hook) {
+            if (_hooks[i].hook == hook) {
                 _hooks[i] = _hooks[_hooks.length - 1];
                 _hooks.pop();
                 break;
@@ -37,9 +44,9 @@ contract MockHookMultiPlexer is ERC7579HookBase {
     }
 
     function isHookInstalled(address account, address hook) external view returns (bool) {
-        address[] memory _hooks = hooks[account];
+        Hook[] memory _hooks = hooks[account];
         for (uint256 i = 0; i < _hooks.length; i++) {
-            if (_hooks[i] == hook) return true;
+            if (_hooks[i].hook == hook) return true;
         }
         return false;
     }
@@ -59,14 +66,18 @@ contract MockHookMultiPlexer is ERC7579HookBase {
 
         bytes[] memory _hookData = new bytes[](length);
         for (uint256 i = 0; i < length; i++) {
-            (bool success, bytes memory _ret) = hooks[account][i].call(
+            Hook storage _hook = hooks[account][i];
+            if (!_hook.isInitialized) {
+                _hook.isInitialized = true;
+            }
+            (bool success, bytes memory _ret) = _hook.hook.call(
                 abi.encodePacked(
                     abi.encodeCall(ERC7579HookBase.preCheck, (msgSender, msgValue, msgData)),
                     address(this),
                     msg.sender
                 )
             );
-            if (!success) revert PreCheckFailed(hooks[account][i]);
+            if (!success) revert PreCheckFailed(_hook.hook);
             _hookData[i] = _ret;
         }
         hookData = abi.encode(_hookData);
@@ -81,14 +92,17 @@ contract MockHookMultiPlexer is ERC7579HookBase {
             _hookData = abi.decode(hookData, (bytes[]));
         }
         for (uint256 i = 0; i < length; i++) {
-            (bool success,) = hooks[account][i].call(
-                abi.encodePacked(
-                    abi.encodeCall(ERC7579HookBase.postCheck, (_hookData[i])),
-                    address(this),
-                    msg.sender
-                )
-            );
-            if (!success) revert PostCheckFailed(hooks[account][i]);
+            Hook storage _hook = hooks[account][i];
+            if (_hook.isInitialized) {
+                (bool success,) = _hook.hook.call(
+                    abi.encodePacked(
+                        abi.encodeCall(ERC7579HookBase.postCheck, (_hookData[i])),
+                        address(this),
+                        msg.sender
+                    )
+                );
+                if (!success) revert PostCheckFailed(_hook.hook);
+            }
         }
     }
 
