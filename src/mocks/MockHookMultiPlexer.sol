@@ -78,7 +78,7 @@ contract MockHookMultiPlexer is ERC7579HookBase {
                 )
             );
             if (!success) revert PreCheckFailed(_hook.hook);
-            _hookData[i] = _ret;
+            _hookData[i] = abi.decode(_ret, (bytes));
         }
         hookData = abi.encode(_hookData);
     }
