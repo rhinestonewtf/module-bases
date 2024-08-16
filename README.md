@@ -1,6 +1,6 @@
 # Module Base
 
-**Base Contracts for Smart Account Modules**
+**Base contracts for smart account modules**
 
 ## Using this repo
 
