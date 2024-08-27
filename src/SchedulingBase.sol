@@ -109,7 +109,7 @@ abstract contract SchedulingBase is ERC7579ExecutorBase {
             isEnabled: true,
             lastExecutionTime: 0,
             executeInterval: uint48(bytes6(orderData[0:6])),
-            numberOfExecutions: nrOfExecution,
+            numberOfExecutions: nrOfExecutions,
             startDate: uint48(bytes6(orderData[8:14])),
             executionData: orderData[14:]
         });
