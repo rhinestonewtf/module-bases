@@ -21,6 +21,7 @@ uint256 constant INSTALL_OFFSET = 132;
 
 abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, TrustedForwarder {
     error HookInvalidSelector();
+    error InvalidCallType();
 
     /*//////////////////////////////////////////////////////////////////////////
                                 CALLDATA DECODING
@@ -110,7 +111,11 @@ abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, Truste
         } else if (calltype == CALLTYPE_BATCH) {
             Execution[] calldata execs = ExecutionLib.decodeBatch(encodedExecutions);
             return onExecuteBatch(_getAccount(), msgSender, execs);
-        }
+        } else if (calltype == CALLTYPE_DELEGATECALL) {
+            address to = address(bytes20(encodedExecutions[0:20]));
+            bytes calldata callData = encodedExecutions[20:];
+            return onExecuteDelegateCall(_getAccount(), msgSender, to, callData);
+        } else revert InvalidCallType();
     }
 
     function _handleExecutorExecutions(
@@ -133,7 +138,11 @@ abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, Truste
         } else if (calltype == CALLTYPE_BATCH) {
             Execution[] calldata execs = ExecutionLib.decodeBatch(encodedExecutions);
             return onExecuteBatchFromExecutor(_getAccount(), msgSender, execs);
-        }
+        } else if (calltype == CALLTYPE_DELEGATECALL) {
+            address to = address(bytes20(encodedExecutions[0:20]));
+            bytes calldata callData = encodedExecutions[20:];
+            return onExecuteDelegateCall(_getAccount(), msgSender, to, callData);
+        } else revert InvalidCallType();
     }
 
     function postCheck(bytes calldata hookData) external virtual override {
@@ -166,6 +175,17 @@ abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, Truste
         returns (bytes memory hookData)
     { }
 
+    function onExecuteDelegateCall(
+        address account,
+        address msgSender,
+        address target,
+        bytes calldata callData
+    )
+        internal
+        virtual
+        returns (bytes memory hookData)
+    { }
+
     function onExecuteFromExecutor(
         address account,
         address msgSender,
@@ -182,6 +202,17 @@ abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, Truste
         address account,
         address msgSender,
         Execution[] calldata
+    )
+        internal
+        virtual
+        returns (bytes memory hookData)
+    { }
+
+    function onExecuteDelegateCallFromExecutor(
+        address account,
+        address msgSender,
+        address target,
+        bytes calldata callData
     )
         internal
         virtual
