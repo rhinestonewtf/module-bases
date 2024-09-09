@@ -143,8 +143,7 @@ abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, Truste
         } else if (calltype == CALLTYPE_DELEGATECALL) {
             address to = address(bytes20(encodedExecutions[0:20]));
             bytes calldata callData = encodedExecutions[20:];
-            return onExecuteDelegateCall(_getAccount(), msgSender, to, callData);
-        } else revert InvalidCallType();
+            return onExecuteDelegateCallFromExecutor(_getAccount(), msgSender, to, callData);
         } else {
             revert InvalidCallType();
         }
