@@ -115,7 +115,9 @@ abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, Truste
             address to = address(bytes20(encodedExecutions[0:20]));
             bytes calldata callData = encodedExecutions[20:];
             return onExecuteDelegateCall(_getAccount(), msgSender, to, callData);
-        } else revert InvalidCallType();
+        } else {
+            revert InvalidCallType();
+        }
     }
 
     function _handleExecutorExecutions(
@@ -143,6 +145,9 @@ abstract contract ERC7579HookDestruct is IERC7579Hook, ERC7579ModuleBase, Truste
             bytes calldata callData = encodedExecutions[20:];
             return onExecuteDelegateCall(_getAccount(), msgSender, to, callData);
         } else revert InvalidCallType();
+        } else {
+            revert InvalidCallType();
+        }
     }
 
     function postCheck(bytes calldata hookData) external virtual override {
