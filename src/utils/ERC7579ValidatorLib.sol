@@ -18,9 +18,7 @@ enum ACCOUNT_EXEC_TYPE {
 library ERC7579ValidatorLib {
     error InvalidExecutionType();
 
-    function decodeExecType(
-        PackedUserOperation calldata _ops
-    )
+    function decodeExecType(PackedUserOperation calldata _ops)
         internal
         pure
         returns (ACCOUNT_EXEC_TYPE _type)
@@ -28,9 +26,7 @@ library ERC7579ValidatorLib {
         return decodeExecType(_ops.callData);
     }
 
-    function decodeExecType(
-        bytes calldata userOpCalldata
-    )
+    function decodeExecType(bytes calldata userOpCalldata)
         internal
         pure
         returns (ACCOUNT_EXEC_TYPE _type)
@@ -56,9 +52,7 @@ library ERC7579ValidatorLib {
         // }
     }
 
-    function decodeCalldataBatch(
-        bytes calldata userOpCalldata
-    )
+    function decodeCalldataBatch(bytes calldata userOpCalldata)
         internal
         pure
         returns (Execution[] calldata executionBatch)
@@ -83,9 +77,7 @@ library ERC7579ValidatorLib {
         }
     }
 
-    function decodeCalldataSingle(
-        bytes calldata userOpCalldata
-    )
+    function decodeCalldataSingle(bytes calldata userOpCalldata)
         internal
         pure
         returns (address destination, uint256 value, bytes calldata callData)
@@ -96,9 +88,7 @@ library ERC7579ValidatorLib {
         callData = accountExecCallData[128:userOpCalldata.length - 32];
     }
 
-    function decodeConfig(
-        bytes calldata callData
-    )
+    function decodeConfig(bytes calldata callData)
         internal
         pure
         returns (address module, bytes calldata _callData)
