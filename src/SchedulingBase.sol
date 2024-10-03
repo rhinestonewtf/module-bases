@@ -37,16 +37,16 @@ abstract contract SchedulingBase is ERC7579ExecutorBase {
                                      CONFIG
     //////////////////////////////////////////////////////////////////////////*/
 
-    function onInstall(bytes calldata data) external override {
+    function _onInstall(bytes calldata packedSchedulingData) internal {
         address account = msg.sender;
         if (isInitialized(account)) {
             revert AlreadyInitialized(account);
         }
 
-        _createExecution({ orderData: data });
+        _createExecution({ orderData: packedSchedulingData });
     }
 
-    function onUninstall(bytes calldata) external {
+    function _onUninstall() internal {
         address account = msg.sender;
 
         uint256 count = accountJobCount[account];
@@ -82,13 +82,6 @@ abstract contract SchedulingBase is ERC7579ExecutorBase {
 
         emit ExecutionStatusUpdated(account, jobId);
     }
-
-    /*//////////////////////////////////////////////////////////////////////////
-                                     MODULE LOGIC
-    //////////////////////////////////////////////////////////////////////////*/
-
-    // abstract methohd to be implemented by the inheriting contract
-    function executeOrder(uint256 jobId) external virtual;
 
     /*//////////////////////////////////////////////////////////////////////////
                                      INTERNAL
