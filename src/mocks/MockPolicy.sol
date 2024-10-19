@@ -20,7 +20,7 @@ contract MockPolicy {
     function initializeWithMultiplexer(
         address account,
         bytes32 configId,
-        bytes calldata initData
+        bytes calldata
     )
         external
     {
@@ -41,9 +41,9 @@ contract MockPolicy {
     function checkAction(
         bytes32 id,
         address account,
-        address target,
-        uint256 value,
-        bytes calldata data
+        address,
+        uint256,
+        bytes calldata
     )
         external
         returns (uint256)
@@ -52,19 +52,19 @@ contract MockPolicy {
         return validationData;
     }
 
-    function supportsInterface(bytes4 interfaceID) external view returns (bool) {
+    function supportsInterface(bytes4) external pure returns (bool) {
         return true;
     }
 
     function check1271SignedAction(
-        bytes32 id,
-        address requestSender,
-        address account,
-        bytes32 hash,
-        bytes calldata signature
+        bytes32,
+        address,
+        address,
+        bytes32,
+        bytes calldata
     )
         external
-        view
+        pure
         returns (bool)
     {
         return true;
