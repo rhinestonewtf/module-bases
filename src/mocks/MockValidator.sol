@@ -38,10 +38,23 @@ contract MockValidator is ERC7579ValidatorBase {
     }
 
     function isModuleType(uint256 typeID) external pure override returns (bool) {
-        return typeID == TYPE_VALIDATOR;
+        return typeID == TYPE_VALIDATOR || typeID == 7;
     }
 
     function isInitialized(address smartAccount) external pure returns (bool) {
         return false;
+    }
+
+    function validateSignatureWithData(
+        bytes32,
+        bytes calldata,
+        bytes calldata
+    )
+        external
+        view
+        virtual
+        returns (bool validSig)
+    {
+        return true;
     }
 }
