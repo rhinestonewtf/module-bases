@@ -51,8 +51,9 @@ contract MockValidator is ERC7579ValidatorBase {
         bytes calldata
     )
         external
-        view
+        pure
         virtual
+        override
         returns (bool validSig)
     {
         return true;
