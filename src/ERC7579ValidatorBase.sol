@@ -6,8 +6,9 @@ import {
     _packValidationData as _packValidationData4337
 } from "./external/ERC4337.sol";
 import { ERC7579ModuleBase } from "./ERC7579ModuleBase.sol";
+import { IStatelessValidator } from "./interfaces/IStatelessValidator.sol";
 
-abstract contract ERC7579ValidatorBase is ERC7579ModuleBase {
+abstract contract ERC7579ValidatorBase is ERC7579ModuleBase, IStatelessValidator {
     type ValidationData is uint256;
 
     ValidationData internal constant VALIDATION_SUCCESS = ValidationData.wrap(0);
@@ -62,4 +63,14 @@ abstract contract ERC7579ValidatorBase is ERC7579ModuleBase {
         view
         virtual
         returns (bytes4);
+
+    function validateSignatureWithData(
+        bytes32,
+        bytes calldata,
+        bytes calldata
+    )
+        external
+        view
+        virtual
+        returns (bool validSig);
 }
