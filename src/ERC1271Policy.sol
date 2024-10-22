@@ -4,7 +4,7 @@ pragma solidity ^0.8.25;
 import { ERC7579PolicyBase } from "./ERC7579PolicyBase.sol";
 import { ConfigId, I1271Policy } from "./interfaces/IPolicy.sol";
 
-abstract contract ERC75791271Policy is ERC7579PolicyBase, I1271Policy {
+abstract contract ERC1271Policy is ERC7579PolicyBase, I1271Policy {
     function check1271SignedAction(
         ConfigId id,
         address requestSender,
