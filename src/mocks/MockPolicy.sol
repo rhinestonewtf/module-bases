@@ -5,7 +5,7 @@ import { PackedUserOperation } from
     "@ERC4337/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 
 contract MockPolicy {
-    uint256 validationData = 1;
+    mapping(address account => uint256 validation) public validationData;
     mapping(
         bytes32 id => mapping(address msgSender => mapping(address userOpSender => uint256 calls))
     ) public userOpState;
@@ -13,8 +13,8 @@ contract MockPolicy {
         bytes32 id => mapping(address msgSender => mapping(address userOpSender => uint256 calls))
     ) public actionState;
 
-    function setValidationData(uint256 data) external {
-        validationData = data;
+    function setValidationData(address account, uint256 validation) external {
+        validationData[account] = validation;
     }
 
     function initializeWithMultiplexer(
@@ -35,7 +35,7 @@ contract MockPolicy {
         returns (uint256)
     {
         userOpState[id][msg.sender][userOp.sender] += 1;
-        return validationData;
+        return validationData[userOp.sender];
     }
 
     function checkAction(
@@ -49,7 +49,7 @@ contract MockPolicy {
         returns (uint256)
     {
         actionState[id][msg.sender][account] += 1;
-        return validationData;
+        return validationData[account];
     }
 
     function supportsInterface(bytes4) external pure returns (bool) {
