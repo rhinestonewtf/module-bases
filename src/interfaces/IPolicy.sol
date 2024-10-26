@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 pragma solidity ^0.8.23;
 
+// solhint-disable no-unused-import
 import { PackedUserOperation, _packValidationData } from "../external/ERC4337.sol";
 import {
     IModule as IERC7579Module,
     VALIDATION_SUCCESS,
     VALIDATION_FAILED
 } from "erc7579/interfaces/IERC7579Module.sol";
-
-import "forge-std/interfaces/IERC165.sol";
+import { IERC165 } from "forge-std/interfaces/IERC165.sol";
 
 type ConfigId is bytes32;
 
