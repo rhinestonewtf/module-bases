@@ -2,6 +2,7 @@
 pragma solidity ^0.8.23;
 
 import { ERC7579ExecutorBase } from "../ERC7579ExecutorBase.sol";
+// solhint-disable-next-line no-unused-import
 import { IERC7579Account } from "../external/ERC7579.sol";
 
 contract MockExecutor is ERC7579ExecutorBase {
@@ -25,7 +26,13 @@ contract MockExecutor is ERC7579ExecutorBase {
         return typeID == TYPE_EXECUTOR;
     }
 
-    function isInitialized(address smartAccount) external pure returns (bool) {
+    function isInitialized(
+        address // smartAccount
+    )
+        external
+        pure
+        returns (bool)
+    {
         return false;
     }
 }

@@ -2,6 +2,8 @@
 pragma solidity ^0.8.23;
 
 contract MockTarget {
+    error Unauthorized();
+
     uint256 public value;
 
     function set(uint256 _value) public payable returns (uint256) {
@@ -11,7 +13,7 @@ contract MockTarget {
 
     function setAccessControl(uint256 _value) public returns (uint256) {
         if (msg.sender != address(this)) {
-            revert("MockTarget: not authorized");
+            revert Unauthorized();
         }
         value = _value;
         return _value;

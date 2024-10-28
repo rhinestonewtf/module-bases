@@ -3,7 +3,7 @@ pragma solidity ^0.8.25;
 
 abstract contract TrustedForwarder {
     // account => trustedForwarder
-    mapping(address account => address) public trustedForwarder;
+    mapping(address account => address trustedForwarder) public trustedForwarder;
 
     /**
      * Set the trusted forwarder for an account

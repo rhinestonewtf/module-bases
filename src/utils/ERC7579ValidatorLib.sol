@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity ^0.8.25;
 
+// solhint-disable-next-line no-unused-import
 import { IERC7579Account, Execution } from "../external/ERC7579.sol";
 import { PackedUserOperation, UserOperationLib } from "../external/ERC4337.sol";
 
@@ -31,7 +32,7 @@ library ERC7579ValidatorLib {
         pure
         returns (ACCOUNT_EXEC_TYPE _type)
     {
-        bytes4 functionSig = bytes4(userOpCalldata[:4]);
+        // bytes4 functionSig = bytes4(userOpCalldata[:4]);
 
         // if (IERC7579Account.execute.selector == functionSig) {
         //     _type = ACCOUNT_EXEC_TYPE.EXEC_SINGLE;

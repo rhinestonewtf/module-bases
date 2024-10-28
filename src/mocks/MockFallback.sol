@@ -8,15 +8,21 @@ contract MockFallback is ERC7579FallbackBase {
 
     function onUninstall(bytes calldata data) external override { }
 
-    function targetFunction() external returns (bool) {
+    function targetFunction() external pure returns (bool) {
         return true;
     }
 
-    function isModuleType(uint256 typeID) external view returns (bool) {
+    function isModuleType(uint256 typeID) external pure returns (bool) {
         return typeID == TYPE_FALLBACK;
     }
 
-    function isInitialized(address smartAccount) external view returns (bool) {
+    function isInitialized(
+        address // smartAccount
+    )
+        external
+        pure
+        returns (bool)
+    {
         return false;
     }
 }

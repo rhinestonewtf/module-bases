@@ -12,7 +12,7 @@ contract MockHookMultiPlexer is ERC7579HookBase {
         bool isInitialized;
     }
 
-    mapping(address => Hook[]) public hooks;
+    mapping(address account => Hook[] hookData) public hooks;
 
     function onInstall(bytes calldata data) external override {
         if (data.length == 0) return;
