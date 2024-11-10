@@ -3,14 +3,12 @@ pragma solidity ^0.8.25;
 
 import { ERC7579PolicyBase } from "./ERC7579PolicyBase.sol";
 import { ConfigId, IUserOpPolicy } from "./interfaces/IPolicy.sol";
+import { PackedUserOperation } from "./external/ERC4337.sol";
 
 abstract contract ERC7579UserOpPolicy is ERC7579PolicyBase, IUserOpPolicy {
     function checkUserOp(
         ConfigId id,
-        address account,
-        address target,
-        uint256 value,
-        bytes calldata data
+        PackedUserOperation calldata userOp
     )
         external
         virtual
