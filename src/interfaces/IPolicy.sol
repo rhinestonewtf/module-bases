@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LGPL-3.0-only
-pragma solidity ^0.8.23;
+pragma solidity >=0.8.0 <0.9.0;
 
 // solhint-disable no-unused-import
 import { PackedUserOperation, _packValidationData } from "../external/ERC4337.sol";

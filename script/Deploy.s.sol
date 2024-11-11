@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.23;
+pragma solidity >=0.8.0 <0.9.0;
 
 import { Script } from "forge-std/Script.sol";
 import { MockValidator } from "src/mocks/MockValidator.sol";

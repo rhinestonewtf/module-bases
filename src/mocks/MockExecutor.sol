@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.23;
+pragma solidity >=0.8.0 <0.9.0;
 
 import { ERC7579ExecutorBase } from "../ERC7579ExecutorBase.sol";
 // solhint-disable-next-line no-unused-import
