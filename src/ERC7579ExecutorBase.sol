@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-pragma solidity ^0.8.25;
+pragma solidity >=0.8.0 <0.9.0;
 
 // solhint-disable-next-line   no-global-import
 import "./external/ERC7579.sol";

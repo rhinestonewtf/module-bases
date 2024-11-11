@@ -5,5 +5,5 @@ erc7579/=node_modules/erc7579/src/
 account-abstraction/=node_modules/@ERC4337/account-abstraction/contracts/
 account-abstraction-v0.6/=node_modules/@ERC4337/account-abstraction-v0.6/contracts/
 
-sentinellist/=node_modules/sentinellist/src/
+sentinellist/=node_modules/@rhinestone/sentinellist/src/
 solady/=node_modules/solady/src/
