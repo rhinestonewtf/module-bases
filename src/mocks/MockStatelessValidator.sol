@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-import { ERC7579StatelessValidatorBase } from "src/ERC7579StatelessValidatorBase.sol";
+import { ERC7579StatelessValidatorBase } from "../ERC7579StatelessValidatorBase.sol";
 
 contract MockStatelessValidator is ERC7579StatelessValidatorBase {
     function onInstall(bytes calldata data) external virtual { }
