@@ -50,18 +50,4 @@ contract MockValidator is ERC7579ValidatorBase {
     {
         return false;
     }
-
-    function validateSignatureWithData(
-        bytes32,
-        bytes calldata,
-        bytes calldata
-    )
-        external
-        pure
-        virtual
-        override
-        returns (bool validSig)
-    {
-        return true;
-    }
 }
