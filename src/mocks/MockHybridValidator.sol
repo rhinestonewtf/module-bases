@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-/* solhint-disable no-unused-vars */
-import { ERC7579ValidatorBase } from "../ERC7579ValidatorBase.sol";
+import { ERC7579HybridValidatorBase } from "../ERC7579HybridValidatorBase.sol";
 import { PackedUserOperation } from "../external/ERC4337.sol";
 
-contract MockValidator is ERC7579ValidatorBase {
+contract MockHybridValidator is ERC7579HybridValidatorBase {
     function onInstall(bytes calldata data) external virtual override { }
 
     function onUninstall(bytes calldata data) external virtual override { }
@@ -49,5 +48,18 @@ contract MockValidator is ERC7579ValidatorBase {
         returns (bool)
     {
         return false;
+    }
+
+    function validateSignatureWithData(
+        bytes32,
+        bytes calldata,
+        bytes calldata
+    )
+        external
+        pure
+        override
+        returns (bool validSig)
+    {
+        return true;
     }
 }
